@@ -1,0 +1,53 @@
+﻿@page "/fetchdata"
+
+<PageTitle>Users</PageTitle>
+
+@using BlazorGiris.Data
+@using BlazorGiris.DataContext
+@using System.Collections.ObjectModel
+@inject WeatherForecastService ForecastService
+
+<h1>Users From Database</h1>
+@if (_userlist == null)
+{
+    <p><em>Loading...</em></p>
+}
+else
+{
+    <table class="table">
+        <thead>
+            <tr>
+                <th>UserID</th>
+                <th>Username</th>
+                <th>Email</th>
+                
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var user in _userlist)
+            {
+                <tr>
+                    <td>@user.ID.ToString()</td>
+                    <td>@user.Username</td>
+                    <td>@user.E_mail</td>
+                </tr>
+            }
+        </tbody>
+    </table>
+}
+
+@code {
+    private ObservableCollection<UserModel>? _userlist;
+
+    protected override void OnInitialized()
+    {
+        _userlist = new ObservableCollection<UserModel>();
+        using(var db = new UserDataContext())
+        {
+            foreach(var user in db.Users.OrderBy(e => e.ID))
+            {
+                _userlist.Add(user);
+            }
+        }
+    }
+}
