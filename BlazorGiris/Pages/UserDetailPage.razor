@@ -23,7 +23,6 @@
                     </div>
                 </div>
             </div>
-
         </div>
     </div>
     <div class="card card-">
@@ -63,11 +62,10 @@
                 </div>
                 <div class="form-group">
                     <label for="txtPassword">Password</label><br>
-                    <input type="text" @bind=_tmp.Password placeholder="@_tmp.Password" id="txtPassword" />
+                    <input type="text" @bind-value=@_tmp.Password placeholder="@_tmp.Password" id="txtPassword" />
                 </div>
                 <div class="form-group">
-                    <label>Gender</label>
-                    <select id="Gender">
+                    <select id="Gender" @bind="_userGender">
                         <option value="true">Male</option>
                         <option value="false">Female</option>
                     </select>
@@ -76,17 +74,19 @@
                 <div class="form-group">
                     <div class="row">
                         <div class="col">
-                            <button class="btn btn-outline-primary" type="submit">Edit Data</button>
+                            <button class="btn btn-outline-primary btn-primary" type="submit">Edit Data</button>
                         </div>
                     </div>
                 </div>
             </form>
         </div>
     </div>
+
 }
 @code {
     [Parameter]
     public string? value { get; set; }
+    private bool _userGender = false;
 
     private bool HideEditDiv { get; set; } = true;
     private void SetHide()
@@ -131,17 +131,9 @@
         {
             using (var db = new UserDataContext())
             {
-
-                //var item = db.Users.FirstOrDefault(i => i.ID == _tmp.ID);
-                //if (item != null)
-                //{
-                //    item = _tmp;
-                //}
-                //db.Users.Update(_tmp);
-                //db.SaveChanges();
+                _tmp.Gender = _userGender;
                 db.Update(_tmp);
                 db.SaveChanges();
-
             }
             NavigationManager.NavigateTo("#");
         }
