@@ -1,6 +1,7 @@
 ﻿@page "/fetchdata"
 
 <PageTitle>Users</PageTitle>
+@using BlazorGiris.Controllers
 @using BlazorGiris.Data
 @using BlazorGiris.DataContext
 @using System.Collections.ObjectModel
@@ -39,6 +40,7 @@ else
         </tbody>
     </table>
 <p>After Time:@_after</p>
+
 }
 
 @code {

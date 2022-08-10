@@ -1,0 +1,13 @@
+﻿@page "/CustomComponentDeneme"
+@using BlazorGiris.Controllers
+@using BlazorGiris.Data
+
+<h3>CustomComponentDeneme</h3>
+<CascadingValue Name="number" Value="@_number">
+    <CustomComponent Value="DenemeComponent"></CustomComponent>
+</CascadingValue>
+
+@code {
+    private int _number = 999;
+
+}

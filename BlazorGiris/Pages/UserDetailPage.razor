@@ -64,12 +64,6 @@
                     <label for="txtPassword">Password</label><br>
                     <input type="text" @bind-value=@_tmp.Password placeholder="@_tmp.Password" id="txtPassword" />
                 </div>
-                <div class="form-group">
-                    <select id="Gender" @bind="_userGender">
-                        <option value="true">Male</option>
-                        <option value="false">Female</option>
-                    </select>
-                </div>
                 <br />
                 <div class="form-group">
                     <div class="row">
@@ -77,14 +71,11 @@
                             <button class="btn btn-primary" type="submit"><span class=" oi-document"></span>Edit Data</button>
                         </div>
                     </div>
-                    <div class="row">
 
-                    </div>
                 </div>
             </form>
         </div>
     </div>
-
 }
 @code {
     [Parameter]
@@ -138,7 +129,7 @@
                 db.Update(_tmp);
                 db.SaveChanges();
             }
-            NavigationManager.NavigateTo("#");
+            NavigationManager.NavigateTo("/fetchdata");
         }
         catch (Exception ex)
         {
