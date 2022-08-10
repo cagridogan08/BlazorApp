@@ -1,12 +1,11 @@
 ﻿@page "/fetchdata"
 
 <PageTitle>Users</PageTitle>
-
 @using BlazorGiris.Data
 @using BlazorGiris.DataContext
 @using System.Collections.ObjectModel
 @inject WeatherForecastService ForecastService
-
+<p>Start Time: @_now</p>
 <h1>Users From Database</h1>
 @if (_userlist == null)
 {
@@ -17,9 +16,11 @@ else
     <table class="table">
         <thead>
             <tr>
+                <th>Icon</th>
                 <th>UserID</th>
                 <th>Username</th>
                 <th>Email</th>
+                <th>Gender</th>
                 
             </tr>
         </thead>
@@ -27,18 +28,23 @@ else
             @foreach (var user in _userlist)
             {
                 <tr>
+                    
+                    <td><img src="../Data" /></td>
                     <td>@user.ID.ToString()</td>
                     <td>@user.Username</td>
                     <td>@user.E_mail</td>
+                    <td>@user.GetGender()</td>
                 </tr>
             }
         </tbody>
     </table>
+<p>After Time:@_after</p>
 }
 
 @code {
     private ObservableCollection<UserModel>? _userlist;
-
+    DateTime _now = DateTime.Now;
+    DateTime _after;
     protected override void OnInitialized()
     {
         _userlist = new ObservableCollection<UserModel>();
@@ -49,5 +55,8 @@ else
                 _userlist.Add(user);
             }
         }
+        _after = DateTime.Now;
     }
+    private string ImageSource=$"../Resources/male_icon.png";
+
 }

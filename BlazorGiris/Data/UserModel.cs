@@ -51,5 +51,17 @@ namespace BlazorGiris.Data
             set { e_mail = value;
             OnPropertyChanged(nameof (E_mail));}
         }
+        [Required]
+        public bool Gender { get; set; }
+
+
+        public string GetGender()
+        {
+            if (this.Gender)
+            {
+                return "Male";
+            }
+            return "Female";
+        }
     }
 }

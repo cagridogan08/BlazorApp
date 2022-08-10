@@ -16,13 +16,22 @@ Welcome to your new app.
             <h1 class="lg:text3x1 text-x1 font:semibold mb-k">Register</h1>
 
             <div class="form-group">
-                <input @bind-value="tmp.Username" type="text" name="username" placeholder="Username" class="form-control" style="border: 1px solid #d3d5d8 !important;">
+                <input @bind-value="tmp.Username" type="text" name="username" placeholder="Username" class="form-control" style="border: 1px solid #d3d5d8 ;">
             </div>
             <div class="form-group">
-                <input @bind-value="tmp.E_mail" type="email" name="email" placeholder="E Mail" class="form-control" style="border: 1px solid #d3d5d8 !important;">
+                <input @bind-value="tmp.E_mail" type="email" name="email" placeholder="E Mail" class="form-control" style="border: 1px solid #d3d5d8 ;">
             </div>
             <div class="form-group">
-                <input @bind-value="tmp.Password" type="password" name="password" placeholder="Password" class="form-control" style="border: 1px solid #d3d5d8 !important;">
+                <input @bind-value="tmp.Password" type="password" name="password" placeholder="Password" class="form-control" style="border: 1px solid #d3d5d8 ;">
+            </div>
+            <div class="form-group">
+                <input @bind-value="password2" type="password" name="second_password" placeholder="Password Again" class="form-control" style="border: 1px solid #d3d5d8 ;">
+            </div>
+            <div class="form-group">
+                <InputSelect id="Gender" @bind-Value="tmp.Gender" >
+                    <option value="true">Male</option>
+                    <option value= "false">Female</option>
+                </InputSelect>
             </div>
             <button type="submit" class="form-control" onclick="" >Register</button>
         </div>
@@ -32,6 +41,7 @@ Welcome to your new app.
 
 @code {
     UserModel tmp = null;
+    string password2 = "";
     string message = "";
     protected override void OnInitialized()
     {
@@ -40,21 +50,30 @@ Welcome to your new app.
     }
     private void HandleValidSubmit()
     {
-        using(var db = new UserDataContext())
+        if(tmp.Password==password2)
         {
-            db.Users.Add(tmp);
-            try
+            using(var db = new UserDataContext())
             {
-                var xx = db.SaveChanges();
-                tmp.Username = "";
-                tmp.E_mail = "";
-                tmp.Password = "";
+                
+                try
+                {
+                    db.Users.Add(tmp);
+                    db.SaveChanges();
+                    tmp.Username = "";
+                    tmp.E_mail = "";
+                    tmp.Password = "";
+                    message = "Registeration Successful";
+                }
+                catch(Exception ex)
+                {
+                    message = (string)ex.Message;
+                }
+
             }
-            catch(Exception ex)
-            {
-                Console.WriteLine(ex.Message);
-            }
-            
+        }
+        else
+        {
+            message = "Passwords Don't Match";
         }
     }
 }
