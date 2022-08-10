@@ -14,7 +14,7 @@ namespace BlazorGiris.DataContext
 
         protected override void OnModelCreating(ModelBuilder builder)
         {
-            builder.Entity<UserModel>().HasKey(e=>new {e.Username,e.ID});
+            builder.Entity<UserModel>().HasKey(e=>new {e.ID});
             builder.Entity<UserModel>().Property(e => e.ID).ValueGeneratedOnAdd();
         }
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)

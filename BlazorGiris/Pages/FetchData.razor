@@ -13,7 +13,7 @@
 }
 else
 {
-    <table class="table">
+    <table class="table table-dark">
         <thead>
             <tr>
                 <th>Icon</th>
@@ -29,8 +29,8 @@ else
             {
                 <tr>
                     
-                    <td><img src="../Data" /></td>
-                    <td>@user.ID.ToString()</td>
+                    <td><img src="@ImageSource(user.Gender)" width="64px" height="64px"/></td>
+                    <td><a href="/detail/@user.ID.ToString()">@user.ID.ToString()</a></td>
                     <td>@user.Username</td>
                     <td>@user.E_mail</td>
                     <td>@user.GetGender()</td>
@@ -57,6 +57,13 @@ else
         }
         _after = DateTime.Now;
     }
-    private string ImageSource=$"../Resources/male_icon.png";
+    private string ImageSource(bool _gender)
+    {
+        if (_gender)
+        {
+            return "https://cdn2.iconfinder.com/data/icons/ios-7-icons/50/user_male-256.png"; //male icon
+        }
+        return "https://cdn2.iconfinder.com/data/icons/ios-7-icons/50/user_female2-256.png"; //female icon
+    }
 
 }

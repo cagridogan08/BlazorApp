@@ -28,12 +28,12 @@ Welcome to your new app.
                 <input @bind-value="password2" type="password" name="second_password" placeholder="Password Again" class="form-control" style="border: 1px solid #d3d5d8 ;">
             </div>
             <div class="form-group">
-                <InputSelect id="Gender" @bind-Value="tmp.Gender" >
+                <InputSelect id="Gender" @bind-Value="tmp.Gender">
                     <option value="true">Male</option>
-                    <option value= "false">Female</option>
+                    <option value="false">Female</option>
                 </InputSelect>
             </div>
-            <button type="submit" class="form-control" onclick="" >Register</button>
+            <button type="submit" class="form-control" onclick="">Register</button>
         </div>
     </div>
 </EditForm>
@@ -50,23 +50,32 @@ Welcome to your new app.
     }
     private void HandleValidSubmit()
     {
-        if(tmp.Password==password2)
+        if (tmp.Password == password2)
         {
-            using(var db = new UserDataContext())
+            using (var db = new UserDataContext())
             {
-                
-                try
+                //Username check before add new record
+                if (db.Users.FirstOrDefault(e => e.Username == tmp.Username) != null)
                 {
-                    db.Users.Add(tmp);
-                    db.SaveChanges();
-                    tmp.Username = "";
-                    tmp.E_mail = "";
-                    tmp.Password = "";
-                    message = "Registeration Successful";
+                    message = "Username Exists";
                 }
-                catch(Exception ex)
+                else
                 {
-                    message = (string)ex.Message;
+
+                    try
+                    {
+                        db.Users.Add(tmp);
+                        db.SaveChanges();
+                        tmp.Username = "";
+                        tmp.E_mail = "";
+                        tmp.Password = "";
+                        message = "Registeration Successful";
+                    }
+                    catch (Exception ex)
+                    {
+                        message = (string)ex.Message;
+                    }
+
                 }
 
             }

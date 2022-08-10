@@ -1,0 +1,162 @@
+﻿@page "/detail/{value}"
+@using BlazorGiris.Data
+@using BlazorGiris.DataContext
+@using Microsoft.EntityFrameworkCore
+@inject NavigationManager NavigationManager
+@if (_tmp != null)
+{
+    @*Show User Detail*@
+    <div class="container-fluid col-sm-offset-1">
+        <div class="row">
+            <div class="col-sm-2 col-md-3">
+                <img src="@ImageSource(_tmp.Gender)" />
+                <div class="row">
+                    <div class="col">
+                        <strong><label>Username:@_tmp.Username</label></strong>
+                    </div>
+                    <div class="col">
+                        <strong><label>Email: @_tmp.E_mail</label></strong>
+                    </div>
+                    <div class="w-100"></div>
+                    <div class="col">
+                        <strong><p>Password: @_tmp.Password</p></strong>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+    <div class="card card-">
+        @*<button class="btn btn-primary">Edit User</button>*@
+        @*User Update Components
+    Edit butonuna basıldığında edit componentleri gelmesi
+    *@
+        <div class="container">
+            <div class="row">
+                <div class="col">
+                    <button class="btn btn-primary" @onclick="@SetHide" style="animation:step-start">Show/Hide Detail</button>
+                </div>
+                <div class="col">
+                    @*<button class="btn btn-primary" type="button" @onclick=SetHide>
+                Edit & Update User Data
+                </button>*@
+                </div>
+                <div class="col">
+                </div>
+                <div class="col">
+                    <button @onclick="DeleteUser" style="background-color:red;color:whitesmoke;">Delete User</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="card text-center" style="border-style:groove">
+        <div hidden="@HideEditDiv">
+            <strong><label style="border:3px">Update User Data</label></strong>
+            <form @onsubmit="UpdateUser">
+                <div class="form-group">
+                    <label for="txtUsername" style="font-family:'Segoe UI', Tahoma, Geneva, Verdana, sans-serif">Username:</label> <br />
+                    <input type="text" @bind-value="@_tmp.Username" placeholder="@_tmp.Username" id="txtUsername" />
+                </div>
+                <div class="form-group">
+                    <label for="txtEmail" style="font-size:large">Email:</label> <br />
+                    <input type="text" @bind-value="@_tmp.E_mail" placeholder="@_tmp.E_mail" id="txtEmail" />
+                </div>
+                <div class="form-group">
+                    <label for="txtPassword">Password</label><br>
+                    <input type="text" @bind=_tmp.Password placeholder="@_tmp.Password" id="txtPassword" />
+                </div>
+                <div class="form-group">
+                    <label>Gender</label>
+                    <select id="Gender">
+                        <option value="true">Male</option>
+                        <option value="false">Female</option>
+                    </select>
+                </div>
+                <br />
+                <div class="form-group">
+                    <div class="row">
+                        <div class="col">
+                            <button class="btn btn-outline-primary" type="submit">Edit Data</button>
+                        </div>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+}
+@code {
+    [Parameter]
+    public string? value { get; set; }
+
+    private bool HideEditDiv { get; set; } = true;
+    private void SetHide()
+    {
+        HideEditDiv = !HideEditDiv;
+    }
+
+    private UserModel _tmp = null;
+    protected override void OnInitialized()
+    {
+        base.OnInitialized();
+        GetUserDataFromDatabase();
+    }
+    protected void GetUserDataFromDatabase()
+    {
+        using (var db = new UserDataContext())
+        {
+            _tmp = db.Users.FirstOrDefault(e => e.ID == Int32.Parse(value));
+        }
+    }
+
+    private void DeleteUser()
+    {
+        try
+        {
+            using (var db = new UserDataContext())
+            {
+                db.Users.Remove(_tmp);
+                var save = db.SaveChangesAsync();
+            }
+            NavigationManager.NavigateTo("/fetchdata");
+        }
+        catch (Exception ex)
+        {
+
+        }
+
+    }
+    private void UpdateUser()
+    {
+        try
+        {
+            using (var db = new UserDataContext())
+            {
+
+                //var item = db.Users.FirstOrDefault(i => i.ID == _tmp.ID);
+                //if (item != null)
+                //{
+                //    item = _tmp;
+                //}
+                //db.Users.Update(_tmp);
+                //db.SaveChanges();
+                db.Update(_tmp);
+                db.SaveChanges();
+
+            }
+            NavigationManager.NavigateTo("#");
+        }
+        catch (Exception ex)
+        {
+            Console.WriteLine(ex.Message);
+        }
+
+    }
+    private string ImageSource(bool _gender)
+    {
+        if (_gender)
+        {
+            return "https://cdn2.iconfinder.com/data/icons/ios-7-icons/50/user_male-256.png"; //male icon
+        }
+        return "https://cdn2.iconfinder.com/data/icons/ios-7-icons/50/user_female2-256.png"; //female icon
+    }
+}
