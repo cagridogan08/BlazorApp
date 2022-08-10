@@ -6,7 +6,7 @@
 @if (_tmp != null)
 {
     @*Show User Detail*@
-    <div class="container-fluid col-sm-offset-1">
+    <div class="container-fluid col-sm-offset-1 text-center ">
         <div class="row">
             <div class="col-sm-2 col-md-3">
                 <img src="@ImageSource(_tmp.Gender)" />
@@ -19,7 +19,7 @@
                     </div>
                     <div class="w-100"></div>
                     <div class="col">
-                        <strong><p>Password: @_tmp.Password</p></strong>
+                        <strong><label>Password: @_tmp.Password</label></strong>
                     </div>
                 </div>
             </div>
@@ -33,7 +33,7 @@
         <div class="container">
             <div class="row">
                 <div class="col">
-                    <button class="btn btn-primary" @onclick="@SetHide" style="animation:step-start">Show/Hide Detail</button>
+                    <button class="btn btn-primary oi-arrow-bottom" @onclick="@SetHide" style="animation:step-start">Show/Hide Detail</button>
                 </div>
                 <div class="col">
                     @*<button class="btn btn-primary" type="button" @onclick=SetHide>
@@ -43,7 +43,7 @@
                 <div class="col">
                 </div>
                 <div class="col">
-                    <button @onclick="DeleteUser" style="background-color:red;color:whitesmoke;">Delete User</button>
+                    <button class="oi-ban" @onclick="DeleteUser" style="background-color:red;color:whitesmoke;">Delete User</button>
                 </div>
             </div>
         </div>
@@ -74,8 +74,11 @@
                 <div class="form-group">
                     <div class="row">
                         <div class="col">
-                            <button class="btn btn-outline-primary btn-primary" type="submit">Edit Data</button>
+                            <button class="btn btn-primary" type="submit"><span class=" oi-document"></span>Edit Data</button>
                         </div>
+                    </div>
+                    <div class="row">
+
                     </div>
                 </div>
             </form>
