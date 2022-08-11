@@ -3,13 +3,22 @@
 @using BlazorGiris.DataContext
 @using Microsoft.EntityFrameworkCore
 @inject NavigationManager NavigationManager
+<style>
+    #hidden-div{
+        border-radius:4px;
+        border-color:black;
+    }
+</style>
+
+
+
 @if (_tmp != null)
 {
     @*Show User Detail*@
     <div class="container-fluid col-sm-offset-1 text-center ">
         <div class="row">
             <div class="col-sm-2 col-md-3">
-                <img src="@ImageSource(_tmp.Gender)" />
+                <img src="@ImageSource(_tmp.Gender)"/>
                 <div class="row">
                     <div class="col">
                         <strong><label>Username:@_tmp.Username</label></strong>
@@ -49,7 +58,7 @@
         </div>
     </div>
     <div class="card text-center" style="border-style:groove">
-        <div hidden="@HideEditDiv">
+        <div hidden="@HideEditDiv" class="hidden-div">
             <strong><label style="border:3px">Update User Data</label></strong>
             <form @onsubmit="UpdateUser">
                 <div class="form-group">
@@ -68,7 +77,7 @@
                 <div class="form-group">
                     <div class="row">
                         <div class="col">
-                            <button class="btn btn-primary" type="submit"><span class=" oi-document"></span>Edit Data</button>
+                            <button class="btn btn-primary oi-document" type="submit">Edit Data</button>
                         </div>
                     </div>
 
@@ -76,6 +85,10 @@
             </form>
         </div>
     </div>
+
+
+
+   
 }
 @code {
     [Parameter]
@@ -96,9 +109,16 @@
     }
     protected void GetUserDataFromDatabase()
     {
-        using (var db = new UserDataContext())
+        try
         {
-            _tmp = db.Users.FirstOrDefault(e => e.ID == Int32.Parse(value));
+            using (var db = new UserDataContext())
+            {
+                _tmp = db.Users.FirstOrDefault(e => e.ID == Int32.Parse(value));
+            }
+        }
+        catch (Exception ex)
+        {
+            Console.WriteLine(ex.Message);
         }
     }
 
@@ -115,7 +135,7 @@
         }
         catch (Exception ex)
         {
-
+            Console.WriteLine(ex.Message);
         }
 
     }
