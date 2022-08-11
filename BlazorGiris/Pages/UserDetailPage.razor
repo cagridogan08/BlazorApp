@@ -3,6 +3,7 @@
 @using BlazorGiris.DataContext
 @using Microsoft.EntityFrameworkCore
 @inject NavigationManager NavigationManager
+@inject UserService service
 <style>
     #hidden-div{
         border-radius:4px;
@@ -115,6 +116,7 @@
             {
                 _tmp = db.Users.FirstOrDefault(e => e.ID == Int32.Parse(value));
             }
+            _tmp = service.GetUserByID(Int32.Parse(value));
         }
         catch (Exception ex)
         {

@@ -5,7 +5,7 @@
 @using BlazorGiris.Data
 @using BlazorGiris.DataContext
 @using System.Collections.ObjectModel
-@inject WeatherForecastService ForecastService
+@inject UserService service
 <p>Start Time: @_now</p>
 <h1>Users From Database</h1>
 @if (_userlist == null)
@@ -29,9 +29,8 @@ else
             @foreach (var user in _userlist)
             {
                 <tr>
-                    
-                    <td><img src="@ImageSource(user.Gender)" width="64px" height="64px"/></td>
-                    <td><a href="/detail/@user.ID.ToString()">@user.ID.ToString()</a></td>
+                    <td><img src="@ImageSource(user.Gender)" width="64" height="64"/></td>
+                    <td><UserDetailPage value="@user.ID.ToString()"></UserDetailPage></td>
                     <td>@user.Username</td>
                     <td>@user.E_mail</td>
                     <td>@user.GetGender()</td>
@@ -47,6 +46,9 @@ else
     private ObservableCollection<UserModel>? _userlist;
     DateTime _now = DateTime.Now;
     DateTime _after;
+    /// <summary>
+    /// İnit aşamasında veritabanından verileri alma işlemi
+    /// </summary>
     protected override void OnInitialized()
     {
         _userlist = new ObservableCollection<UserModel>();
@@ -55,10 +57,16 @@ else
             foreach(var user in db.Users.OrderBy(e => e.ID))
             {
                 _userlist.Add(user);
+                service.AddUser(user);
             }
         }
         _after = DateTime.Now;
     }
+    /// <summary>
+    /// User nesnesinin gender true veya false olduğu durumlarda string döndürür
+    /// </summary>
+    /// <param name="_gender"></param>
+    /// <returns>Female /Male değeri string ile döndürülür</returns>
     private string ImageSource(bool _gender)
     {
         if (_gender)

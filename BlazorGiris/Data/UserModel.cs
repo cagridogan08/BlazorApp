@@ -28,6 +28,9 @@ namespace BlazorGiris.Data
                 OnPropertyChanged(nameof(ID));
             }
         }
+        /// <summary>
+        ///  Variables for model
+        /// </summary>
         [Required]
         [StringLength(10,ErrorMessage="Username Is Too Long!!")]
         private string? username;
